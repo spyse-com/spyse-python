@@ -328,6 +328,35 @@ class TestSpyse(unittest.TestCase):
         self.assertEqual(final.results[0].ipv6_prefixes, None)
 
     @responses.activate
+    def test_scroll_autonomous_systems(self):
+        q = SearchQuery()
+        q.append_param(QueryParam(ASSearchParams.asn, Operators.equals, "1"))
+
+        f = open("data/as_scroll_search.json")
+        fixture = f.read()
+        f.close()
+
+        responses.add(**{
+            'method': responses.POST,
+            'url': 'https://api.spyse.com/v4/data/as/scroll/search',
+            'body': fixture,
+            'status': 200,
+            'content_type': 'application/json',
+        })
+
+        final = self.client.scroll_autonomous_systems(q)
+
+        self.assertEqual(final.search_id,
+                         "69735f6170695f726571756573746f6c657379614073707973652e636f6d323032312d30382d30352030383"
+                         "a35393a32392e313539353233333631202b30303030205554435b7b2261736e223a7b226f70657261746f72"
+                         "223a226571222c2276616c7565223a2231227d7d5de1f6d98a214b9ab97f5b9ce669804935")
+        self.assertEqual(final.results[0].asn, 1)
+        self.assertEqual(final.results[0].as_org, "LVLT-1")
+        self.assertEqual(final.results[0].ipv4_prefixes[0].cidr, "4.34.12.0/23")
+        self.assertEqual(final.results[0].ipv4_prefixes[0].isp, "Level 3 Communications")
+        self.assertEqual(final.results[0].ipv6_prefixes, None)
+
+    @responses.activate
     def test_get_email(self):
         f = open("data/email_details.json")
         fixture = f.read()
