@@ -199,6 +199,26 @@ class TestSpyse(unittest.TestCase):
         self.assertEqual(final.results[0].trackers.adsense_id, "")
 
     @responses.activate
+    def test_count_domains(self):
+        q = SearchQuery()
+        q.append_param(QueryParam(DomainSearchParams.name, Operators.equals, "test.com"))
+
+        f = open("data/count.json")
+        fixture = f.read()
+        f.close()
+
+        responses.add(**{
+            'method': responses.POST,
+            'url': 'https://api.spyse.com/v4/data/domain/search/count',
+            'body': fixture,
+            'status': 200,
+            'content_type': 'application/json',
+        })
+
+        final = self.client.count_domains(q)
+        self.assertEqual(final, 1)
+
+    @responses.activate
     def test_get_as(self):
         f = open("data/as_details.json")
         fixture = f.read()
