@@ -143,11 +143,13 @@ class TestSpyse(unittest.TestCase):
         final = self.client.get_domain_details("google.com")
 
         self.assertEqual(final.alexa.rank, 45948)
-        self.assertEqual(final.cert_summary.fingerprint_sha256, "39b1d164f63d6044e92b4b72ff054a6ad0e9584968b132a9e1fcd90b4b45d449")
+        self.assertEqual(final.cert_summary.fingerprint_sha256,
+                         "39b1d164f63d6044e92b4b72ff054a6ad0e9584968b132a9e1fcd90b4b45d449")
         self.assertEqual(final.cert_summary.issuer.country, "US")
         self.assertEqual(final.dns_records.A[0], "69.172.200.235")
         self.assertEqual(final.dns_records.SOA.email, "jposch.testcentral.com")
-        self.assertEqual(final.dns_records.TXT[0], "google-site-verification=kW9t2V_S7WjOX57zq0tP8Ae_WJhRwUcZoqpdEkvuXJk")
+        self.assertEqual(final.dns_records.TXT[0],
+                         "google-site-verification=kW9t2V_S7WjOX57zq0tP8Ae_WJhRwUcZoqpdEkvuXJk")
         self.assertEqual(final.http_extract.http_status_code, 200)
         self.assertEqual(final.http_extract.http_status_code, 200)
         self.assertEqual(final.http_extract.http_headers[0].name, "Server")
