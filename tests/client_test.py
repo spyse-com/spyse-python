@@ -219,6 +219,49 @@ class TestSpyse(unittest.TestCase):
         self.assertEqual(final, 1)
 
     @responses.activate
+    def test_scroll_domains(self):
+        q = SearchQuery()
+        q.append_param(QueryParam(DomainSearchParams.name, Operators.equals, "test.com"))
+
+        f = open("data/domain_scroll_search.json")
+        fixture = f.read()
+        f.close()
+
+        responses.add(**{
+            'method': responses.POST,
+            'url': 'https://api.spyse.com/v4/data/domain/scroll/search',
+            'body': fixture,
+            'status': 200,
+            'content_type': 'application/json',
+        })
+
+        final = self.client.scroll_domains(q)
+
+        self.assertEqual(final.search_id,
+                         "69735f6170695f726571756573746f6c657379614073707973652e636f6d323032312d30382d30352030383a3539"
+                         "3a32392e313539353233333631202b30303030205554435b7b2261736e223a7b226f70657261746f72223a226571"
+                         "222c2276616c7565223a2231227d7d5de1f6d98a214b9ab97f5b9ce669804935")
+        self.assertEqual(final.results[0].alexa.rank, 45948)
+        self.assertEqual(final.results[0].cert_summary.fingerprint_sha256,
+                         "39b1d164f63d6044e92b4b72ff054a6ad0e9584968b132a9e1fcd90b4b45d449")
+        self.assertEqual(final.results[0].cert_summary.issuer.country, "US")
+        self.assertEqual(final.results[0].dns_records.A[0], "69.172.200.235")
+        self.assertEqual(final.results[0].dns_records.SOA.email, "jposch.testcentral.com")
+        self.assertEqual(final.results[0].dns_records.TXT[0],
+                         "google-site-verification=kW9t2V_S7WjOX57zq0tP8Ae_WJhRwUcZoqpdEkvuXJk")
+        self.assertEqual(final.results[0].http_extract.http_status_code, 200)
+        self.assertEqual(final.results[0].http_extract.http_status_code, 200)
+        self.assertEqual(final.results[0].http_extract.http_headers[0].name, "Server")
+        self.assertEqual(final.results[0].whois_parsed.admin.email,
+                         "fy4gz7f67tr@networksolutionsprivateregistration.com")
+        self.assertEqual(final.results[0].security_score.score, 100)
+        self.assertEqual(final.results[0].organizations[0].crunchbase.name, "Spyse")
+        self.assertEqual(final.results[0].organizations[0].crunchbase.categories[0], "Big Data")
+        self.assertEqual(final.results[0].organizations[0].crunchbase.is_primary, True)
+        self.assertEqual(final.results[0].technologies[0].name, "Nginx")
+        self.assertEqual(final.results[0].trackers.adsense_id, "")
+
+    @responses.activate
     def test_get_as(self):
         f = open("data/as_details.json")
         fixture = f.read()
