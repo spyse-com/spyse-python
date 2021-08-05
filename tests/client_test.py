@@ -284,6 +284,25 @@ class TestSpyse(unittest.TestCase):
         self.assertEqual(final.ipv6_prefixes, None)
 
     @responses.activate
+    def test_count_autonomous_systems(self):
+        q = SearchQuery()
+        q.append_param(QueryParam(ASSearchParams.domain, Operators.equals, 'google.com'))
+
+        f = open("data/count.json")
+        fixture = f.read()
+        f.close()
+
+        responses.add(**{
+            'method': responses.POST,
+            'url': 'https://api.spyse.com/v4/data/as/search/count',
+            'body': fixture,
+            'status': 200,
+            'content_type': 'application/json',
+        })
+        final = self.client.count_autonomous_systems(q)
+        self.assertEqual(final, 1)
+
+    @responses.activate
     def test_get_email(self):
         f = open("data/email_details.json")
         fixture = f.read()
