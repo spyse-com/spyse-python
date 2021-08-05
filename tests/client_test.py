@@ -303,6 +303,31 @@ class TestSpyse(unittest.TestCase):
         self.assertEqual(final, 1)
 
     @responses.activate
+    def test_search_autonomous_systems(self):
+        q = SearchQuery()
+        q.append_param(QueryParam(ASSearchParams.asn, Operators.equals, "1"))
+
+        f = open("data/as_details.json")
+        fixture = f.read()
+        f.close()
+
+        responses.add(**{
+            'method': responses.POST,
+            'url': 'https://api.spyse.com/v4/data/as/search',
+            'body': fixture,
+            'status': 200,
+            'content_type': 'application/json',
+        })
+
+        final = self.client.search_autonomous_systems(q)
+
+        self.assertEqual(final.results[0].asn, 1)
+        self.assertEqual(final.results[0].as_org, "LVLT-1")
+        self.assertEqual(final.results[0].ipv4_prefixes[0].cidr, "4.34.12.0/23")
+        self.assertEqual(final.results[0].ipv4_prefixes[0].isp, "Level 3 Communications")
+        self.assertEqual(final.results[0].ipv6_prefixes, None)
+
+    @responses.activate
     def test_get_email(self):
         f = open("data/email_details.json")
         fixture = f.read()
