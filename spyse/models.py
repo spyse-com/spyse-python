@@ -848,7 +848,7 @@ class Report:
 class Abuse:
     reports_num: Optional[int] = None
     score: Optional[int] = None
-    reports:  Optional[List[Report]] = None
+    reports: Optional[List[Report]] = None
 
 
 @dataclass_json
@@ -867,7 +867,10 @@ class GeoData:
     as_num: Optional[int] = None
     as_org: Optional[str] = None
     isp: Optional[str] = None
-    location_data: Optional[LocationData] = None
+    city_name: Optional[str] = None
+    country: Optional[str] = None
+    country_iso_code: Optional[str] = None
+    location: Optional[GeoPoint] = None
 
 
 @dataclass_json
@@ -876,6 +879,7 @@ class SeverityDetails:
     HIGH: Optional[int] = None
     MEDIUM: Optional[int] = None
     LOW: Optional[int] = None
+
 
 @dataclass_json
 @dataclass
