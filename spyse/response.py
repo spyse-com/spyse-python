@@ -67,6 +67,10 @@ class InternalServerError(SpyseError):
     pass
 
 
+class RateLimitError(SpyseError):
+    pass
+
+
 class UnknownError(SpyseError):
     pass
 
@@ -82,6 +86,7 @@ class Response:
     CODE_UNAUTHORIZED = 'unauthorized'
     CODE_FORBIDDEN = 'forbidden'
     CODE_INTERNAL_SERVER_ERROR = 'internal_server_error'
+    CODE_RATE_LIMIT_ERROR = 'too_many_requests'
 
     data: Optional[Data] = None
     error: Optional[Error] = None
@@ -108,5 +113,7 @@ class Response:
             raise ForbiddenError(m)
         elif self.error.code == self.CODE_INTERNAL_SERVER_ERROR:
             raise InternalServerError(m)
+        elif self.error.code == self.CODE_RATE_LIMIT_ERROR:
+            raise RateLimitError(m)
         else:
             raise UnknownError(m)
