@@ -9,7 +9,10 @@
         "downloads_limit_remaining": 50,
         "downloads_limit": 50,
         "is_scroll_search_enabled": true,
-        "search_params_limit": 10
+        "search_params_limit": 10,
+        "on_demand_scans_remaining": 327680,
+        "on_demand_scans_limit": 327680,
+        "requests_rate_limit": 4
       }
     ]
   }
