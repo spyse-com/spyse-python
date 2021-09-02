@@ -1,12 +1,13 @@
 import unittest
 import responses
+import os
 
 from spyse import Client, SearchQuery, QueryParam, ASSearchParams, DomainSearchParams, Operators
 
 
 class TestSpyse(unittest.TestCase):
     def setUp(self) -> None:
-        self.client = Client("test-key")
+        self.client = Client(os.getenv("SPYSE_API_TOKEN"))
 
     @responses.activate
     def test_get_quotas(self):
