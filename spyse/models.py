@@ -14,6 +14,9 @@ class Account:
     downloads_limit: Optional[int] = None
     is_scroll_search_enabled: Optional[bool] = None
     search_params_limit: Optional[int] = 10
+    requests_rate_limit: Optional[int] = None
+    on_demand_scans_remaining: Optional[int] = None
+    on_demand_scans_limit: Optional[int] = None
 
 
 @dataclass_json
