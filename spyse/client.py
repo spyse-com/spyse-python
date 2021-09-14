@@ -76,7 +76,7 @@ class Client:
         self.base_url = base_url
         self.limiter = get_limiter(rate=self.RATE_LIMIT_FRAME_IN_SECONDS, capacity=1)
         self.account = self.get_quotas()
-        self.limiter = get_limiter(rate=self.RATE_LIMIT_FRAME_IN_SECONDS, capacity=self.account.requests_rate_limit)
+        self.limiter._capacity = self.account.requests_rate_limit
 
     def __get(self, endpoint: str) -> Response:
         with limit(self.limiter, consume=1):

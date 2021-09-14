@@ -9,7 +9,7 @@ with open('LICENSE.md') as f:
 
 setup(
     name='spyse-python',
-    version='2.2.2',
+    version='2.2.3',
     description='Python wrapper for spyse.com',
     long_description=readme,
     long_description_content_type='text/markdown',
