@@ -19,5 +19,5 @@ setup(
     license=license,
     packages=find_packages(exclude=('tests', 'examples')),
     install_requires=['requests>=2.26,<2.28', 'dataclasses~=0.6', 'dataclasses-json~=0.5.4', 'responses>=0.13.3,<0.18.0',
-                      'limiter~=0.1.2']
+                      'limiter>=0.1.2,<0.3.0']
 )
