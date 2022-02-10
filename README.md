@@ -32,12 +32,18 @@ For more information about the API, please check the [API Reference](https://spy
 pip3 install spyse-python
 ```
 
+For Nix or NixOS is a [pre-packed module](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=spyse-python)
+available. The lastest release is usually present in the `unstable` channel.
+
+```bash
+nix-env -iA nixos.python3Packages.spyse-python
+```
+
 ## Updating
 
 ```bash
 pip3 install --no-cache-dir spyse-python
 ```
-
 
 ## Quick start
 ```python
