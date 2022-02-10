@@ -18,6 +18,7 @@ setup(
     url='https://github.com/spyse-com/spyse-python',
     license=license,
     packages=find_packages(exclude=('tests', 'examples')),
-    install_requires=['requests~=2.26.0', 'dataclasses~=0.6', 'dataclasses-json~=0.5.4', 'responses~=0.13.3',
+    python_requires='>=3.7',
+    install_requires=['requests~=2.26.0', 'dataclasses-json~=0.5.4', 'responses~=0.13.3',
                       'limiter~=0.1.2']
 )
