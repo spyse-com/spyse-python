@@ -4,7 +4,7 @@ from typing import List, Optional
 from .models import AS, Domain, IP, CVE, Account, Certificate, Email, DNSHistoricalRecord, WHOISHistoricalRecord
 from .response import Response
 from .search_query import SearchQuery
-from limiter import get_limiter, limit
+from limiter import Limiter
 
 
 class DomainsSearchResults:
@@ -62,34 +62,35 @@ class HistoricalWHOISSearchResults:
         self.search_id: Optional[str] = search_id
         self.results: List[WHOISHistoricalRecord] = results
 
-
+from datetime import datetime
 class Client:
     DEFAULT_BASE_URL = 'https://api.spyse.com/v4/data'
     MAX_LIMIT = 100
-    SEARCH_RESULTS_LIMIT = 10000
-    RATE_LIMIT_FRAME_IN_SECONDS = 1
+    CAPACITY = 1
+    RATE_LIMIT_FRAME_IN_SECONDS = 0.85
 
     def __init__(self, api_token, base_url=DEFAULT_BASE_URL):
         self.session = requests.Session()
         self.session.headers.update({'Authorization': 'Bearer ' + api_token})
         self.session.headers.update({'User-Agent': 'spyse-python'})
         self.base_url = base_url
-        self.limiter = get_limiter(rate=self.RATE_LIMIT_FRAME_IN_SECONDS, capacity=1)
+        self.limiter = Limiter(rate=self.RATE_LIMIT_FRAME_IN_SECONDS, capacity=self.CAPACITY)
         self.account = self.get_quotas()
-        self.limiter._capacity = self.account.requests_rate_limit
+
+        if self.account.requests_rate_limit != self.limiter.capacity:
+            self.limiter.capacity = self.account.requests_rate_limit
 
     def __get(self, endpoint: str) -> Response:
-        with limit(self.limiter, consume=1):
+        with self.limiter(consume=1):
             return Response.from_dict(self.session.get(endpoint).json())
 
     def __search(self, endpoint, query: SearchQuery, lim: int = MAX_LIMIT, offset: int = 0) -> Response:
-        with limit(self.limiter, consume=1):
-            return Response.from_dict(self.session.post(endpoint,
-                                                        json={"search_params": query.get(), "limit": lim,
-                                                              "offset": offset}).json())
+        with self.limiter(consume=1):
+            return Response.from_dict(self.session.post(
+                endpoint, json={"search_params": query.get(), "limit": lim, "offset": offset}).json())
 
     def __scroll(self, endpoint, query: SearchQuery, search_id: Optional[str] = None) -> Response:
-        with limit(self.limiter, consume=1):
+        with self.limiter(consume=1):
             if search_id:
                 body = {"search_params": query.get(), "search_id": search_id}
             else:
