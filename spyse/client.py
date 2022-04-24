@@ -62,7 +62,7 @@ class HistoricalWHOISSearchResults:
         self.search_id: Optional[str] = search_id
         self.results: List[WHOISHistoricalRecord] = results
 
-from datetime import datetime
+
 class Client:
     DEFAULT_BASE_URL = 'https://api.spyse.com/v4/data'
     MAX_LIMIT = 100
