@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Dict
 
+
 @dataclass
 class QueryParam:
     def __init__(self, name: str, operator: str, value: str):

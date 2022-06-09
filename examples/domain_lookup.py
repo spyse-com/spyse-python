@@ -7,7 +7,7 @@ client = Client(api_token)
 
 d = client.get_domain_details('tesla.com')
 
-print(f"Domain details:")
+print(f"Domain details: {d}")
 print(f"Website title: {d.http_extract.title}")
 print(f"Alexa rank: {d.alexa.rank}")
 print(f"Certificate subject org: {d.cert_summary.subject.organization}")

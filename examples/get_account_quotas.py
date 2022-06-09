@@ -5,8 +5,8 @@ api_token = os.getenv("SPYSE_API_TOKEN")
 client = Client(api_token)
 
 q = client.get_quotas()
-    
-print(f"Customer account quotas:")
+
+print(f"Customer account quotas: {q}")
 print(f"Subscription period start at: {q.start_at}")
 print(f"Subscription period end at: {q.end_at}")
 print(f"API requests remaining: {q.api_requests_remaining}")
