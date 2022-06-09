@@ -9,7 +9,7 @@ with open('LICENSE.md') as f:
 
 setup(
     name='spyse-python',
-    version='2.2.3',
+    version='2.2.4',
     description='Python wrapper for spyse.com',
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -19,6 +19,6 @@ setup(
     license=spyse_license,
     packages=find_packages(exclude=('tests', 'examples')),
     python_requires='>=3.7',
-    install_requires=['requests>=2.26,<2.28', 'dataclasses-json~=0.5.4', 'responses>=0.13.3,<0.22.0',
-                      'limiter>=0.1.2,<0.4.0']
+    install_requires=['requests>=2.28.0', 'dataclasses-json~=0.5.4', 'responses>=0.13.3',
+                      'limiter>=0.1.2']
 )
